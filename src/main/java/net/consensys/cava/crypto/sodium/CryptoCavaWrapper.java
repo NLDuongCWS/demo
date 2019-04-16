@@ -24,83 +24,82 @@
 
 package net.consensys.cava.crypto.sodium;
 
-import com.google.common.base.Verify;
-import jnr.ffi.byref.LongLongByReference;
-
 import java.util.function.IntSupplier;
 import java.util.stream.IntStream;
+
+import com.google.common.base.Verify;
+
+import jnr.ffi.byref.LongLongByReference;
 
 /**
  * Class for exposing underlying generich hash for blake2b.
  * <p>
- * Necessary as by default {@link Sodium#crypto_generichash_blake2b} is defined as package-private
+ * Necessary as by default {@link Sodium#crypto_generichash_blake2b} is defined
+ * as package-private
  */
 public class CryptoCavaWrapper {
 
-    public static final int VARIANT_URLSAFE_NO_PADDING = 7;
+	public static final int VARIANT_URLSAFE_NO_PADDING = 7;
 
-    private CryptoCavaWrapper() {
-    }
+	private CryptoCavaWrapper() {
+	}
 
-    private interface SodiumDecoder {
+	private interface SodiumDecoder {
 
-        int call(byte[] in, byte[] out, LongLongByReference reference);
+		int call(byte[] in, byte[] out, LongLongByReference reference);
 
-        default byte[] decode(byte[] in) {
-            byte[] out = new byte[in.length];
-            LongLongByReference reference = new LongLongByReference();
-            runIt(() -> call(in, out, reference));
-            byte[] result = new byte[reference.intValue()];
-            System.arraycopy(out, 0, result, 0, reference.intValue());
-            return result;
-        }
-    }
+		default byte[] decode(byte[] in) {
+			byte[] out = new byte[in.length];
+			LongLongByReference reference = new LongLongByReference();
+			runIt(() -> call(in, out, reference));
+			byte[] result = new byte[reference.intValue()];
+			System.arraycopy(out, 0, result, 0, reference.intValue());
+			return result;
+		}
+	}
 
-    public static byte[] base64Decode(byte[] base64Decoded) {
-        return ((SodiumDecoder)
-                (in, out, reference) ->
-                        Sodium.sodium_base642bin(out, in.length, in, in.length, null, reference, null, VARIANT_URLSAFE_NO_PADDING)
-        ).decode(base64Decoded);
-    }
+	public static byte[] base64Decode(byte[] base64Decoded) {
+		return ((SodiumDecoder) (in, out, reference) -> Sodium.sodium_base642bin(out, in.length, in, in.length, null,
+				reference, null, VARIANT_URLSAFE_NO_PADDING)).decode(base64Decoded);
+	}
 
-    public static byte[] hexToBin(byte[] hex) {
-        return ((SodiumDecoder)
-                (in, out, reference) -> Sodium.sodium_hex2bin(out, hex.length, hex, hex.length, null, reference, null)
-        ).decode(hex);
-    }
+	public static byte[] hexToBin(byte[] hex) {
+		return ((SodiumDecoder) (in, out, reference) -> Sodium.sodium_hex2bin(out, hex.length, hex, hex.length, null,
+				reference, null)).decode(hex);
+	}
 
-    public static void cryptoGenericHashBlake2b(byte[] out, byte[] in, byte[] key) {
-        runIt(() -> Sodium.crypto_generichash_blake2b(out, out.length, in, in.length, key, key.length));
-    }
+	public static void cryptoGenericHashBlake2b(byte[] out, byte[] in, byte[] key) {
+		runIt(() -> Sodium.crypto_generichash_blake2b(out, out.length, in, in.length, key, key.length));
+	}
 
-    public static byte[] randomBytes(int length) {
-        byte[] result = new byte[length];
-        Sodium.randombytes(result, length);
+	public static byte[] randomBytes(int length) {
+		byte[] result = new byte[length];
+		Sodium.randombytes(result, length);
 
-        Verify.verify(!isEmpty(result), "Random generation failed, contains all zeroes");
+		Verify.verify(!isEmpty(result), "Random generation failed, contains all zeroes");
 
-        return result;
-    }
+		return result;
+	}
 
-    public static void cryptoSignDetached(byte[] out, byte[] msg, byte[] privateKey) {
-        runIt(() -> Sodium.crypto_sign_detached(out, new LongLongByReference(), msg, msg.length, privateKey));
-    }
+	public static void cryptoSignDetached(byte[] out, byte[] msg, byte[] privateKey) {
+		runIt(() -> Sodium.crypto_sign_detached(out, new LongLongByReference(), msg, msg.length, privateKey));
+	}
 
-    public static void cryptoSignEd25519SeedKeypair(byte[] seed, byte[] pkey, byte[] sk) {
-        runIt(() -> Sodium.crypto_sign_ed25519_seed_keypair(pkey, sk, seed));
-    }
+	public static void cryptoSignEd25519SeedKeypair(byte[] seed, byte[] pkey, byte[] sk) {
+		runIt(() -> Sodium.crypto_sign_ed25519_seed_keypair(pkey, sk, seed));
+	}
 
-    public static int cryptoSignVerifyDetached(byte[] signature, byte[] message, byte[] publicKey) {
-        return Sodium.crypto_sign_verify_detached(signature, message, message.length, publicKey);
-    }
+	public static int cryptoSignVerifyDetached(byte[] signature, byte[] message, byte[] publicKey) {
+		return Sodium.crypto_sign_verify_detached(signature, message, message.length, publicKey);
+	}
 
-    static boolean isEmpty(final byte[] data) {
-        return IntStream.range(0, data.length).parallel().allMatch(i -> data[i] == 0);
-    }
+	static boolean isEmpty(final byte[] data) {
+		return IntStream.range(0, data.length).parallel().allMatch(i -> data[i] == 0);
+	}
 
-    private static void runIt(IntSupplier s) {
-        int returnCode = s.getAsInt();
-        Verify.verify(returnCode == 0, "Call to Libsodium failed, return code was " + returnCode);
-    }
+	private static void runIt(IntSupplier s) {
+		int returnCode = s.getAsInt();
+		Verify.verify(returnCode == 0, "Call to Libsodium failed, return code was " + returnCode);
+	}
 
 }
