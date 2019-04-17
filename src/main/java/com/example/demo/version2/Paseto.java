@@ -10,8 +10,8 @@
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
  *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
  *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -20,44 +20,43 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- */
-
-package com.example.demo.version2;
-
-import java.security.SignatureException;
-
-public class Paseto {
-
-	private Paseto() {
-	}
-
-	/**
+ * 
+ * 
+ * package com.example.demo.version2;
+ * 
+ * import java.security.SignatureException;
+ * 
+ * public class Paseto {
+ * 
+ * private Paseto() { }
+ * 
+ *//**
 	 * https://github.com/paragonie/paseto/blob/master/docs/01-Protocol-Versions/Version2.md#encrypt
 	 */
-	public static String encrypt(byte[] key, String payload, String footer) {
-		return PasetoLocal.encrypt(key, payload, footer);
-	}
-
-	/**
+/*
+ * public static String encrypt(byte[] key, String payload, String footer) {
+ * return PasetoLocal.encrypt(key, payload, footer); }
+ * 
+ *//**
 	 * https://github.com/paragonie/paseto/blob/master/docs/01-Protocol-Versions/Version2.md#decrypt
 	 */
-	public static String decrypt(byte[] key, String signedMessage, String footer) {
-		return PasetoLocal.decrypt(key, signedMessage, footer);
-	}
-
-	/**
+/*
+ * public static String decrypt(byte[] key, String signedMessage, String footer)
+ * { return PasetoLocal.decrypt(key, signedMessage, footer); }
+ * 
+ *//**
 	 * Sign the token,
 	 * https://github.com/paragonie/paseto/blob/master/docs/01-Protocol-Versions/Version2.md#sign
 	 */
-	public static String sign(byte[] privateKey, String payload, String footer) {
-		return PasetoPublic.sign(privateKey, payload, footer);
-	}
-
-	/**
+/*
+ * public static String sign(byte[] privateKey, String payload, String footer) {
+ * return PasetoPublic.sign(privateKey, payload, footer); }
+ * 
+ *//**
 	 * Parse the token,
 	 * https://github.com/paragonie/paseto/blob/master/docs/01-Protocol-Versions/Version2.md#verify
-	 */
-	public static String parse(byte[] publicKey, String signedMessage, String footer) throws SignatureException {
-		return PasetoPublic.parse(publicKey, signedMessage, footer);
-	}
-}
+	 *//*
+		 * public static String parse(byte[] publicKey, String signedMessage, String
+		 * footer) throws SignatureException { return PasetoPublic.parse(publicKey,
+		 * signedMessage, footer); } }
+		 */

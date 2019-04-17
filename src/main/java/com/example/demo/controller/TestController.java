@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.version2.Paseto;
-
+import net.aholbrook.paseto.Paseto;
+import net.aholbrook.paseto.PasetoV2;
+import net.aholbrook.paseto.crypto.NonceGenerator;
+import net.aholbrook.paseto.crypto.v2.V2CryptoProvider;
+import net.aholbrook.paseto.encoding.EncodingProvider;
 import net.aholbrook.paseto.meta.PasetoBuilders;
 import net.aholbrook.paseto.service.PublicTokenService;
 import net.aholbrook.paseto.service.Token;
@@ -23,8 +26,12 @@ public class TestController {
 	public ResponseEntity<?> one() {
 		String priKey = "32aa18a5fcfa9f2a2e7b6a7d159037fac31451a9421509f45a5313650825754fc12f34ed0ea6bdc3af569e5bcbb1f9dd78f09ab42bdafe0c987c66ccd7f70727";
 		byte[] privateKey = Hex.decode(priKey);
-
-		String signedToken = Paseto.sign(privateKey, "{\"id\":123,\"jsonrpc\":\"2.0\",\"method\":\"eapi_health\"}", "");
+		Object payload = "{\"id\":123,\"jsonrpc\":\"2.0\",\"method\":\"eapi_health\"}";
+		//String signedToken = PasetoV2.sign(privateKey, "{\"id\":123,\"jsonrpc\":\"2.0\",\"method\":\"eapi_health\"}", "");
+		PasetoV2 o = new PasetoV2(EncodingProvider, V2CryptoProvider, NonceGenerator);
+		String signedToken = o.sign(payload,privateKey,"");
+		
+		//public String sign(Object payload, byte[] sk, String footer) {
 
 		return new ResponseEntity<>(signedToken, HttpStatus.OK);
 	}
