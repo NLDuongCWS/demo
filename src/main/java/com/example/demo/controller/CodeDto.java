@@ -5,20 +5,10 @@ package com.example.demo.controller;
  */
 public class CodeDto {
 
-	private Object params;
 	private Integer decimals;
-	private String mintBatches;
 	private String name;
 	private String symbol;
 	private String tokenOwner;
-
-	public Object getParams() {
-		return params;
-	}
-
-	public void setParams(Object params) {
-		this.params = params;
-	}
 
 	public Integer getDecimals() {
 		return decimals;
@@ -26,14 +16,6 @@ public class CodeDto {
 
 	public void setDecimals(Integer decimals) {
 		this.decimals = decimals;
-	}
-
-	public String getMintBatches() {
-		return mintBatches;
-	}
-
-	public void setMintBatches(String mintBatches) {
-		this.mintBatches = mintBatches;
 	}
 
 	public String getName() {
@@ -62,8 +44,8 @@ public class CodeDto {
 
 	@Override
 	public String toString() {
-		return "CodeDto [params=" + params + ", decimals=" + decimals + ", mintBatches=" + mintBatches + ", name="
-				+ name + ", symbol=" + symbol + ", tokenOwner=" + tokenOwner + "]";
+		return "CodeDto [decimals=" + decimals + ", name=" + name + ", symbol=" + symbol + ", tokenOwner=" + tokenOwner
+				+ "]";
 	}
 
 }

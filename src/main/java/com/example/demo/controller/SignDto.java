@@ -8,6 +8,7 @@ public class SignDto {
 	private Integer id;
 	private String jsonrpc;
 	private String method;
+	private CodeDto params;
 
 	public Integer getId() {
 		return id;
@@ -33,11 +34,17 @@ public class SignDto {
 		this.method = method;
 	}
 
-	@Override
-	public String toString() {
-		return "CodeDto [id=" + id + ", jsonrpc=" + jsonrpc + ", method=" + method + "]";
+	public CodeDto getParams() {
+		return params;
 	}
 
-	
-	
+	public void setParams(CodeDto params) {
+		this.params = params;
+	}
+
+	@Override
+	public String toString() {
+		return "SignDto [id=" + id + ", jsonrpc=" + jsonrpc + ", method=" + method + ", params=" + params + "]";
+	}
+
 }

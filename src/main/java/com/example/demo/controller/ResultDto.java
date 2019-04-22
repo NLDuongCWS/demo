@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.Map;
 
 public class ResultDto{
 
@@ -14,7 +13,6 @@ public class ResultDto{
 	public void setResult(Object result) {
 		this.result = result;
 	}
-	
 	public ResultDto() {}
 	
 	public ResultDto(Object result) {
